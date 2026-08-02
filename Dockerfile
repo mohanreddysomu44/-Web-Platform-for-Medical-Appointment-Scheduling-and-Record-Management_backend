@@ -2,14 +2,8 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY pom.xml .
-COPY mvnw .
-COPY mvnw.cmd .
-COPY .mvn .mvn
-
-# Copy source code (this includes both Java and resources)
-COPY src src
+# Copy everything (since pom.xml, mvnw, .mvn, src are all at root)
+COPY . .
 
 # Build the project using Maven wrapper
 RUN ./mvnw clean package -DskipTests
