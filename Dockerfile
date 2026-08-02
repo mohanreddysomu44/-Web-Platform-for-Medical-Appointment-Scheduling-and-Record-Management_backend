@@ -8,7 +8,7 @@ COPY mvnw .
 COPY mvnw.cmd .
 COPY .mvn .mvn
 
-# Copy source code
+# Copy source code (this includes both Java and resources)
 COPY src src
 
 # Build the project using Maven wrapper
