@@ -1,16 +1,26 @@
-# Stage 1: Build the JAR
+# ---------- Stage 1: Build ----------
 FROM maven:3.9.6-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
-# Copy everything (pom.xml, src/, etc.)
+# Copy entire repository
 COPY . .
 
-# Build the project using Maven
-RUN mvn clean package -DskipTests
+# Move to Spring Boot project
+WORKDIR /app/medvalt
 
-# Stage 2: Run the JAR
+# Build the application
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
+
+# ---------- Stage 2: Run ----------
 FROM eclipse-temurin:17-jdk-alpine
+
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+
+# Copy the generated jar
+COPY --from=build /app/medvalt/target/*.jar app.jar
+
 EXPOSE 8080
+
 ENTRYPOINT ["java","-jar","app.jar"]
