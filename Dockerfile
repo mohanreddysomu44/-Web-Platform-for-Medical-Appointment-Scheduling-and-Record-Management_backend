@@ -2,11 +2,11 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy everything (since pom.xml, mvnw, .mvn, src are all at root)
+# Copy everything (pom.xml, src/, etc.)
 COPY . .
 
-# Build the project using Maven wrapper
-RUN ./mvnw clean package -DskipTests
+# Build the project using Maven
+RUN mvn clean package -DskipTests
 
 # Stage 2: Run the JAR
 FROM eclipse-temurin:17-jdk-alpine
