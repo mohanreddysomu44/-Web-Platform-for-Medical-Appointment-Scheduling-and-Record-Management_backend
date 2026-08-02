@@ -1,14 +1,17 @@
 # Stage 1: Build the JAR
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-# Copy pom.xml first to leverage Docker cache
+
+# Copy Maven wrapper and pom.xml
 COPY pom.xml .
-COPY .mvn .mvn
 COPY mvnw .
 COPY mvnw.cmd .
+COPY .mvn .mvn
+
 # Copy source code
 COPY src src
-COPY resources resources
+
+# Build the project using Maven wrapper
 RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Run the JAR
